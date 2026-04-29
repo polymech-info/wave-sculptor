@@ -76,7 +76,7 @@ export const PRESETS: Preset[] = [
     name: "Sculpt",
     description: "Carved organic ridges with deep valleys",
     heightFn: "sculpt",
-    defaults: { freqX: 1.8, freqY: 1.4, phase: 0.6, warp: 1.1, ridges: 5, amplitude: 26, heightVariance: 0.35 },
+    defaults: { freqX: 1.4, freqY: 1.1, phase: 0.6, warp: 1.4, ridges: 3, amplitude: 40, heightVariance: 0.2, layers: 7, layerSharpness: 0.85 },
   },
 ];
 
@@ -95,6 +95,8 @@ export const DEFAULT_PARAMS: WaveParams = {
   ridges: 3,
   seed: 1,
   heightVariance: 0,
+  layers: 6,
+  layerSharpness: 0.7,
 };
 
 // smooth pseudo-noise in [0,1] using hashed bilinear interpolation
