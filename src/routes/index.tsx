@@ -235,6 +235,14 @@ function WaveStudio() {
               onChange={(v) => update("seed", v)} />
             <ParamSlider label="Height variance" value={params.heightVariance} min={0} max={1} step={0.01}
               onChange={(v) => update("heightVariance", v)} />
+            {params.preset === "sculpt" && (
+              <>
+                <ParamSlider label="Layers" value={params.layers} min={2} max={20} step={1}
+                  onChange={(v) => update("layers", v)} />
+                <ParamSlider label="Layer sharpness" value={params.layerSharpness} min={0} max={1} step={0.01}
+                  onChange={(v) => update("layerSharpness", v)} />
+              </>
+            )}
           </section>
 
           {/* Saved */}
