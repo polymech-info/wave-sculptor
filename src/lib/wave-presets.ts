@@ -166,6 +166,12 @@ export function heightAt(u: number, v: number, p: WaveParams): number {
       break;
     }
   }
+  // height variance — low-frequency multiplier centered on 1
+  if (p.heightVariance > 0) {
+    const n = smoothNoise(u * 1.5 + 7.3, v * 1.5 - 3.1, p.seed);
+    const m = 1 + (n - 0.5) * 2 * p.heightVariance;
+    h *= Math.max(0, m);
+  }
   // clamp
   if (h < 0) h = 0;
   if (h > 1) h = 1;
