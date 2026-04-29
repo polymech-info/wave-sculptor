@@ -79,7 +79,7 @@ function WaveStudio() {
   const exportSTL = () => {
     const geom = buildSolidGeometry(params);
     const data = geometryToBinarySTL(geom);
-    const blob = new Blob([data], { type: "model/stl" });
+    const blob = new Blob([data.buffer as ArrayBuffer], { type: "model/stl" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `wave-${params.preset}-${params.stockX}x${params.stockY}x${params.stockZ}.stl`;
