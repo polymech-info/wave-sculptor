@@ -69,6 +69,13 @@ export const PRESETS: Preset[] = [
     heightFn: "spiral",
     defaults: { freqX: 4, freqY: 4, phase: 0.3, warp: 0.5, ridges: 6, amplitude: 14 },
   },
+  {
+    id: "sculpt",
+    name: "Sculpt",
+    description: "Carved organic ridges with deep valleys",
+    heightFn: "sculpt",
+    defaults: { freqX: 1.8, freqY: 1.4, phase: 0.6, warp: 1.1, ridges: 5, amplitude: 26, heightVariance: 0.35 },
+  },
 ];
 
 export const DEFAULT_PARAMS: WaveParams = {
