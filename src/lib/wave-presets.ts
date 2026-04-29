@@ -166,14 +166,15 @@ export function heightAt(u: number, v: number, p: WaveParams): number {
       break;
     }
   }
-  // height variance — low-frequency multiplier centered on 1
-  if (p.heightVariance > 0) {
-    const n = smoothNoise(u * 1.5 + 7.3, v * 1.5 - 3.1, p.seed);
-    const m = 1 + (n - 0.5) * 2 * p.heightVariance;
-    h *= Math.max(0, m);
-  }
   // clamp
   if (h < 0) h = 0;
   if (h > 1) h = 1;
   return h;
+}
+
+/** Per-position amplitude multiplier in [1-variance, 1+variance], smooth low-freq noise. */
+export function amplitudeScaleAt(u: number, v: number, p: WaveParams): number {
+  if (p.heightVariance <= 0) return 1;
+  const n = smoothNoise(u * 1.5 + 7.3, v * 1.5 - 3.1, p.seed);
+  return Math.max(0, 1 + (n - 0.5) * 2 * p.heightVariance);
 }
