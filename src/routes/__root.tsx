@@ -37,6 +37,10 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Wave Studio" },
+      { name: "twitter:description", content: "Parametric wave panel generator with STL export." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9125f312-a8d9-4dfc-9db0-9c4d30f30822/id-preview-c69d38f4--f463845c-b871-492b-876b-7c49779f1821.lovable.app-1777499976257.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9125f312-a8d9-4dfc-9db0-9c4d30f30822/id-preview-c69d38f4--f463845c-b871-492b-876b-7c49779f1821.lovable.app-1777499976257.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
