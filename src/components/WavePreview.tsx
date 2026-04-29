@@ -17,7 +17,7 @@ export function WavePreview({ params, dark }: Props) {
     drag?: { x: number; y: number };
     rot: { x: number; y: number };
     dist: number;
-  }>({ rotating: true, rot: { x: -0.9, y: 0.6 }, dist: 1.7 });
+  }>({ rotating: true, rot: { x: 0.9, y: 0.6 }, dist: 1.7 });
 
   // init three
   useEffect(() => {
