@@ -16,6 +16,8 @@ export type WaveParams = {
   ridges: number;
   seed: number;
   heightVariance: number; // 0..1 — local amplitude variation across surface
+  layers: number; // number of stepped terraces (used by sculpt/topo-style presets)
+  layerSharpness: number; // 0..1 — 0 = smooth, 1 = sharp creases between layers
 };
 
 export type Preset = {
