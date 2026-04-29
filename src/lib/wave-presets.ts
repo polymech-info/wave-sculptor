@@ -15,6 +15,7 @@ export type WaveParams = {
   warp: number;
   ridges: number;
   seed: number;
+  heightVariance: number; // 0..1 — local amplitude variation across surface
 };
 
 export type Preset = {
