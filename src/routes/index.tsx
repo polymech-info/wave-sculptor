@@ -233,6 +233,8 @@ function WaveStudio() {
               onChange={(v) => update("ridges", v)} />
             <ParamSlider label="Seed" value={params.seed} min={0} max={50} step={1}
               onChange={(v) => update("seed", v)} />
+            <ParamSlider label="Height variance" value={params.heightVariance} min={0} max={1} step={0.01}
+              onChange={(v) => update("heightVariance", v)} />
           </section>
 
           {/* Saved */}
