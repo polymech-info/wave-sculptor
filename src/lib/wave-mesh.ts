@@ -82,42 +82,48 @@ export function buildSolidGeometry(p: WaveParams): THREE.BufferGeometry {
   const indices = new Uint32Array(totalIdx);
   let k = 0;
 
+  // Top surface — CCW viewed from +Z
   for (let j = 0; j < resY - 1; j++) {
     for (let i = 0; i < resX - 1; i++) {
       const a = j * resX + i;
       const b = a + 1;
       const c = a + resX;
       const d = c + 1;
-      indices[k++] = a; indices[k++] = c; indices[k++] = b;
-      indices[k++] = b; indices[k++] = c; indices[k++] = d;
+      indices[k++] = a; indices[k++] = b; indices[k++] = c;
+      indices[k++] = b; indices[k++] = d; indices[k++] = c;
     }
   }
-  indices[k++] = BL; indices[k++] = BR; indices[k++] = TR;
-  indices[k++] = BL; indices[k++] = TR; indices[k++] = TL;
+  // Bottom face — CCW viewed from -Z (so CW from above)
+  indices[k++] = BL; indices[k++] = TR; indices[k++] = BR;
+  indices[k++] = BL; indices[k++] = TL; indices[k++] = TR;
 
+  // Side at y = -hy (front), normal -Y
   for (let i = 0; i < resX - 1; i++) {
     const t0 = 0 * resX + i;
     const t1 = 0 * resX + (i + 1);
-    indices[k++] = t0; indices[k++] = BL; indices[k++] = t1;
-    indices[k++] = t1; indices[k++] = BL; indices[k++] = BR;
+    indices[k++] = t0; indices[k++] = t1; indices[k++] = BL;
+    indices[k++] = t1; indices[k++] = BR; indices[k++] = BL;
   }
+  // Side at y = +hy (back), normal +Y
   for (let i = 0; i < resX - 1; i++) {
     const t0 = (resY - 1) * resX + i;
     const t1 = (resY - 1) * resX + (i + 1);
-    indices[k++] = t0; indices[k++] = t1; indices[k++] = TR;
-    indices[k++] = t0; indices[k++] = TR; indices[k++] = TL;
+    indices[k++] = t0; indices[k++] = TR; indices[k++] = t1;
+    indices[k++] = t0; indices[k++] = TL; indices[k++] = TR;
   }
+  // Side at x = -hx (left), normal -X
   for (let j = 0; j < resY - 1; j++) {
     const t0 = j * resX + 0;
     const t1 = (j + 1) * resX + 0;
-    indices[k++] = t0; indices[k++] = t1; indices[k++] = TL;
-    indices[k++] = t0; indices[k++] = TL; indices[k++] = BL;
+    indices[k++] = t0; indices[k++] = TL; indices[k++] = t1;
+    indices[k++] = t0; indices[k++] = BL; indices[k++] = TL;
   }
+  // Side at x = +hx (right), normal +X
   for (let j = 0; j < resY - 1; j++) {
     const t0 = j * resX + (resX - 1);
     const t1 = (j + 1) * resX + (resX - 1);
-    indices[k++] = t0; indices[k++] = BR; indices[k++] = t1;
-    indices[k++] = t1; indices[k++] = BR; indices[k++] = TR;
+    indices[k++] = t0; indices[k++] = t1; indices[k++] = BR;
+    indices[k++] = t1; indices[k++] = TR; indices[k++] = BR;
   }
 
   const geom = new THREE.BufferGeometry();
