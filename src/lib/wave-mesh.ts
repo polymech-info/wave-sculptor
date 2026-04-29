@@ -16,7 +16,7 @@ export function buildHeightfield(p: WaveParams): MeshData {
   const hy = p.stockY / 2;
   const positions = new Float32Array(resX * resY * 3);
   const indices = new Uint32Array((resX - 1) * (resY - 1) * 6);
-  const maxH = Math.min(p.amplitude, p.stockZ - p.baseThickness);
+  const maxH = p.stockZ - p.baseThickness;
   const baseZ = p.baseThickness;
 
   for (let j = 0; j < resY; j++) {
@@ -26,7 +26,10 @@ export function buildHeightfield(p: WaveParams): MeshData {
       const u = (i / (resX - 1)) * 2 - 1;
       const x = u * hx;
       const h = heightAt(u, v, p);
-      const z = baseZ + h * maxH;
+      const ampScale = amplitudeScaleAt(u, v, p);
+      // local amplitude in mm, clamped to fit stock height
+      const localAmp = Math.min(maxH, Math.max(0, p.amplitude * ampScale));
+      const z = baseZ + h * localAmp;
       const o = (j * resX + i) * 3;
       positions[o] = x;
       positions[o + 1] = y;
