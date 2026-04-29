@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { heightAt, type WaveParams } from "./wave-presets";
+import { amplitudeScaleAt, heightAt, type WaveParams } from "./wave-presets";
 
 export type MeshData = {
   positions: Float32Array; // top surface only, for preview/export
