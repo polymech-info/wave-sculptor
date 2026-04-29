@@ -69,6 +69,13 @@ export const PRESETS: Preset[] = [
     heightFn: "spiral",
     defaults: { freqX: 4, freqY: 4, phase: 0.3, warp: 0.5, ridges: 6, amplitude: 14 },
   },
+  {
+    id: "sculpt",
+    name: "Sculpt",
+    description: "Carved organic ridges with deep valleys",
+    heightFn: "sculpt",
+    defaults: { freqX: 1.8, freqY: 1.4, phase: 0.6, warp: 1.1, ridges: 5, amplitude: 26, heightVariance: 0.35 },
+  },
 ];
 
 export const DEFAULT_PARAMS: WaveParams = {
@@ -153,6 +160,19 @@ export function heightAt(u: number, v: number, p: WaveParams): number {
       const ang = Math.atan2(wv, wu);
       const rad = Math.sqrt(wu * wu + wv * wv);
       h = 0.5 + 0.5 * Math.sin(rad * fx * Math.PI - ang * r + ph);
+      break;
+    }
+    case "sculpt": {
+      // Carved ridges: warped flow lines with sharp valley creases between rounded peaks
+      const flow =
+        Math.sin(wu * fx + ph + s) +
+        0.7 * Math.sin((wu * 0.6 + wv * 1.4) * fy - ph * 0.5 + s * 1.3) +
+        0.5 * Math.sin(wv * fy * 0.7 - s);
+      // ridge function: |sin| inverted gives sharp valleys, smoothed peaks
+      const carved = Math.pow(Math.abs(Math.sin(flow * r * 0.5 + ph)), 0.6);
+      // soft envelope to add big-form variation across the panel
+      const env = 0.5 + 0.5 * Math.sin(wu * 0.8 + s) * Math.cos(wv * 0.7 - s);
+      h = 0.15 + 0.85 * (carved * 0.75 + env * 0.25);
       break;
     }
     case "dunes":
