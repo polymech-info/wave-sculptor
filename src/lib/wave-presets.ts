@@ -167,16 +167,25 @@ export function heightAt(u: number, v: number, p: WaveParams): number {
       break;
     }
     case "sculpt": {
-      // Carved ridges: warped flow lines with sharp valley creases between rounded peaks
-      const flow =
-        Math.sin(wu * fx + ph + s) +
-        0.7 * Math.sin((wu * 0.6 + wv * 1.4) * fy - ph * 0.5 + s * 1.3) +
-        0.5 * Math.sin(wv * fy * 0.7 - s);
-      // ridge function: |sin| inverted gives sharp valleys, smoothed peaks
-      const carved = Math.pow(Math.abs(Math.sin(flow * r * 0.5 + ph)), 0.6);
-      // soft envelope to add big-form variation across the panel
-      const env = 0.5 + 0.5 * Math.sin(wu * 0.8 + s) * Math.cos(wv * 0.7 - s);
-      h = 0.15 + 0.85 * (carved * 0.75 + env * 0.25);
+      // Smooth flowing scalar field (warped low-frequency sines = continuous "hills")
+      const field =
+        Math.sin(wu * fx + ph + s) * 0.55 +
+        Math.sin((wu * 0.7 + wv * 1.2) * fy - ph * 0.6 + s * 1.3) * 0.35 +
+        Math.sin(wv * fy * 0.8 + ph * 0.3 - s) * 0.25 +
+        smoothNoise(wu * 1.2 + 5, wv * 1.2 - 3, p.seed) * 0.4 - 0.2;
+      // Normalize to 0..1
+      const f = 0.5 + 0.5 * Math.tanh(field * 0.9);
+      // Quantize into N stepped layers (like a sliced wood-relief panel)
+      const L = Math.max(1, Math.floor(p.layers));
+      const scaled = f * L;
+      const layerIdx = Math.floor(scaled);
+      const frac = scaled - layerIdx;
+      // Rounded-top terrace: each layer rises with a half-cosine bulge then plateaus
+      // sharpness: 0 → linear (smooth), 1 → near-step with rounded crown
+      const k = 1 + p.layerSharpness * 8; // steepness of step transition
+      const stepUp = 1 / (1 + Math.exp(-k * (frac - 0.25))); // sigmoid rise inside layer
+      const crown = Math.sin(Math.min(1, Math.max(0, (frac - 0.25) / 0.75)) * Math.PI) * 0.15 * (1 - p.layerSharpness * 0.5);
+      h = (layerIdx + stepUp) / L + crown / L;
       break;
     }
     case "dunes":
