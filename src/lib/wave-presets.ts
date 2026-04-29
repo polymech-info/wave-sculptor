@@ -85,7 +85,23 @@ export const DEFAULT_PARAMS: WaveParams = {
   warp: 0.6,
   ridges: 3,
   seed: 1,
+  heightVariance: 0,
 };
+
+// smooth pseudo-noise in [0,1] using hashed bilinear interpolation
+function smoothNoise(x: number, y: number, seed: number): number {
+  const xi = Math.floor(x), yi = Math.floor(y);
+  const xf = x - xi, yf = y - yi;
+  const h = (i: number, j: number) => {
+    const s = Math.sin((i * 127.1 + j * 311.7 + seed * 17.13)) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  const u = xf * xf * (3 - 2 * xf);
+  const v = yf * yf * (3 - 2 * yf);
+  const a = h(xi, yi), b = h(xi + 1, yi);
+  const c = h(xi, yi + 1), d = h(xi + 1, yi + 1);
+  return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v;
+}
 
 // Pure height function: returns 0..1 normalized height for normalized (u,v) in [-1,1]
 export function heightAt(u: number, v: number, p: WaveParams): number {
