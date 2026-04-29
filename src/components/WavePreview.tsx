@@ -71,7 +71,7 @@ export function WavePreview({ params, dark }: Props) {
       const dy = (e.clientY - d.y) * 0.005;
       stateRef.current.rot.y += dx;
       stateRef.current.rot.x += dy;
-      stateRef.current.rot.x = Math.max(-1.4, Math.min(0.2, stateRef.current.rot.x));
+      stateRef.current.rot.x = Math.max(-0.2, Math.min(1.4, stateRef.current.rot.x));
       stateRef.current.drag = { x: e.clientX, y: e.clientY };
     };
     const onUp = (e: PointerEvent) => {
